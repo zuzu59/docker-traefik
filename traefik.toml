@@ -1,0 +1,42 @@
+# Service logs (here debug mode)
+debug = true
+traefikLogsFile = "/var/log/traefik/traefik.log"
+logLevel = "DEBUG"
+
+# Entrypoints
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+#        [entryPoints.http.redirect]
+#        entryPoint = "https"
+#    [entryPoints.https]
+#    address = ":443"
+#        [entryPoints.https.tls]
+        
+# Access log
+filePath = "/var/log/traefik/access.log"
+format = "common"
+
+# Admin dashboard
+[web]
+address = ":8080"
+
+[file]
+
+# Backends (here RaspberyPiZero)
+[backends]
+    [backends.back_raspberypi_api]
+        [backends.back_raspberrypi_api.servers.python_flask]
+        url = "http://51.158.76.194:8000"
+#        url = "http://z.zufferey.com"
+
+# Fronts
+[frontends]
+    [frontends.front_raspberrypi_api]
+    backend = "back_raspberrypi_api"
+    entrypoints = ["http", "https"]
+    passHostHeader = true
+        [frontends.front_raspberrypi_api.routes.desktoplamp]
+        rule = "Host:www.zuzuwp.ml"
+
+

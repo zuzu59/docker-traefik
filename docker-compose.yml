@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  proxy:
+    image: traefik
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik.toml:/etc/traefik/traefik.toml
+      - $PWD/.htpasswd:/etc/traefik/.htpasswd
+      - "$PWD/log:/var/log/traefik"
+

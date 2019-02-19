@@ -1,0 +1,55 @@
+# Service logs (here debug mode)
+debug = true
+traefikLogsFile = "/var/log/traefik/traefik.log"
+logLevel = "DEBUG"
+
+# Entrypoints
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+        
+# Access log
+filePath = "/var/log/traefik/access.log"
+format = "common"
+
+# Admin dashboard
+[web]
+address = ":8080"
+
+# Let's Encrypt settings
+[acme]
+email = "hello@xorhak.org"
+storage = "/etc/traefik/letsencrypt.json"
+entryPoint = "https"
+acmeLogging = true
+onDemand = false
+onHostRule = true
+
+# Let's Encrypt domains
+[[acme.domains]]
+main = "api.home.xorhak.org"
+
+# Reload is file modified
+watch = true
+
+# Backends (here RaspberyPiZero)
+[backends]
+    [backends.back_raspberypi_api]
+        [backends.back_raspberrypi_api.servers.python_flask]
+        url = "http://192.168.1.37:5000"
+
+# Fronts
+[frontends]
+    [frontends.front_raspberrypi_api]
+    backend = "back_raspberrypi_api"
+    entrypoints = ["http", "https"]
+    passHostHeader = true
+        [frontends.front_raspberrypi_api.routes.desktoplamp]
+        rule = "Host:api.home.xorhak.org"
+
+
