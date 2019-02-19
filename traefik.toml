@@ -22,21 +22,33 @@ format = "common"
 address = ":8080"
 
 [file]
+filename = "/etc/traefik/traefik.toml"
+watch = true
 
-# Backends (here RaspberyPiZero)
+
+# rules
 [backends]
-    [backends.back_raspberypi_api]
-        [backends.back_raspberrypi_api.servers.python_flask]
+  [backends.backend1]
+[backends.back_raspberrypi_api.servers.python_flask]
         url = "http://51.158.76.194:8000"
 #        url = "http://z.zufferey.com"
 
-# Fronts
+  [backends.backend2]
+    # ...
+
 [frontends]
-    [frontends.front_raspberrypi_api]
-    backend = "back_raspberrypi_api"
+  [frontends.frontend1]
+    backend = "backends.backend1"
     entrypoints = ["http", "https"]
     passHostHeader = true
-        [frontends.front_raspberrypi_api.routes.desktoplamp]
+#        [frontends.front_raspberrypi_api.routes.desktoplamp]
         rule = "Host:www.zuzuwp.ml"
+
+  [frontends.frontend2]
+  # ...
+
+
+
+
 
 
