@@ -1,0 +1,64 @@
+# Service logs (here debug mode)
+debug = true
+traefikLogsFile = "/var/log/traefik/traefik.log"
+logLevel = "DEBUG"
+
+# Entrypoints
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+#        [entryPoints.http.redirect]
+#        entryPoint = "https"
+#    [entryPoints.https]
+#    address = ":443"
+#        [entryPoints.https.tls]
+        
+# Access log
+filePath = "/var/log/traefik/access.log"
+format = "common"
+
+# Admin dashboard
+[web]
+address = ":8080"
+
+[file]
+filename = "/etc/traefik/traefik.toml"
+watch = true
+
+
+# rules
+[backends]
+    [backends.backend1]
+        [backends.backend1.servers]
+            [backends.backend1.servers.server0]
+                url = "http://51.158.76.194:8000"
+#                url = "http://z.zufferey.com"
+
+    [backends.backend2]
+        [backends.backend2.servers]
+            [backends.backend2.servers.server0]
+                url = "http://51.158.76.194:8001"
+#                url = "http://z.zufferey.com"
+
+
+
+[frontends]
+    [frontends.frontend1]
+    entrypoints = ["http", "https"]
+    backend = "backend1"
+    passHostHeader = true
+    [frontends.frontend1.routes]
+        [frontends.frontend1.routes.route0]
+            rule = "Host:site0.zuzuwp.ml"
+
+    [frontends.frontend2]
+    entrypoints = ["http", "https"]
+    backend = "backend2"
+    passHostHeader = true
+    [frontends.frontend2.routes]
+        [frontends.frontend2.routes.route0]
+            rule = "Host:site1.zuzuwp.ml"
+
+
+
+
