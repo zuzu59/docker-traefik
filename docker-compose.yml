@@ -1,19 +1,27 @@
-version: "3"
+version: '3.3'
 
 services:
-  proxy:
-    image: traefik
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/traefik:/etc/traefik
-      - $PWD/.htpasswd:/etc/traefik/.htpasswd
-      - "$PWD/log:/var/log/traefik"
+    traefik:
+        image: traefik:1.7.9 # The official Traefik docker image
+        restart: always
+        container_name: traefik
+        command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+        ports:
+            - "80:80"     # The HTTP port
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+            - ./conf/traefik.toml:/traefik.toml
+        labels:
+            - "traefik.enable=true"
+            - "traefik.port=80"
+            - "traefik.docker.network=traefik_network"
+            - "traefik.entryPoint=http"
+            - "traefik.backend=traefik"
+            - "traefik.frontend.rule=Host:www.tototutu.ml"
+        networks:
+            - traefik_network
 
+
+networks:
+    traefik_network:
+        external: true
