@@ -13,13 +13,11 @@ logLevel = "DEBUG"
 #    address = ":443"
 #        [entryPoints.https.tls]
         
-# Access log
-filePath = "/var/log/traefik/access.log"
-format = "common"
-
 # Admin dashboard
-[web]
-address = ":8080"
+[api]
+entryPoint = "traefik"
+dashboard = true
+debug = false
 
 [file]
 filename = "/etc/traefik/traefik.toml"
@@ -44,7 +42,7 @@ watch = true
 
 [frontends]
     [frontends.frontend1]
-    entrypoints = ["http"]
+    entrypoints = ["http", "https"]
     backend = "backend1"
     passHostHeader = true
     [frontends.frontend1.routes]
@@ -52,7 +50,7 @@ watch = true
             rule = "Host:www.tototutu.cf"
 
     [frontends.frontend2]
-    entrypoints = ["http"]
+    entrypoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
     [frontends.frontend2.routes]
