@@ -12,6 +12,10 @@ services:
             - "8080:8080"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+            - $PWD/traefik:/etc/traefik
+            - $PWD/.htpasswd:/etc/traefik/.htpasswd
+            - "$PWD/log:/var/log/traefik"
         labels:
             - "traefik.enable=true"
-            - "traefik.port=80"
+            - traefik.frontend.rule:"Host:www.tototutu.ml"
+            - "traefik.port=8080"
