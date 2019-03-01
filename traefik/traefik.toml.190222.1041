@@ -1,4 +1,4 @@
-#zf190301.1610
+#zf 190222.1036
 
 # Service logs (here debug mode)
 debug = true
@@ -9,6 +9,13 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
+
+
+[entryPoints.http.redirect]
+    regex = "^http://guide.museebolo.cf/(.*)"
+    replacement = "http://z.zufferey.com/bolo/bolo/new_bolo/home.html"
+
+
 #        [entryPoints.http.redirect]
 #        entryPoint = "https"
 #    [entryPoints.https]
@@ -33,14 +40,17 @@ watch = true
     [backends.backend1]
         [backends.backend1.servers]
             [backends.backend1.servers.server0]
-                url = "http://51.158.76.194:8000"
-#                url = "http://z.zufferey.com"
+                url = "http://51.158.76.194:8001"
 
     [backends.backend2]
         [backends.backend2.servers]
             [backends.backend2.servers.server0]
-                url = "http://51.158.76.194:8001"
-#                url = "http://z.zufferey.com"
+                url = "http://51.158.76.194:8002"
+
+    [backends.backend3]
+        [backends.backend3.servers]
+            [backends.backend3.servers.server0]
+                url = "http://z.zufferey.com/bolo/bolo/new_bolo/home.html"
 
 
 
@@ -51,7 +61,7 @@ watch = true
     passHostHeader = true
     [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
-            rule = "Host:site0.zuzuwp.ml"
+            rule = "Host:site1.zuzuwp.ml"
 
     [frontends.frontend2]
     entrypoints = ["http", "https"]
@@ -59,8 +69,13 @@ watch = true
     passHostHeader = true
     [frontends.frontend2.routes]
         [frontends.frontend2.routes.route0]
-            rule = "Host:site1.zuzuwp.ml"
+            rule = "Host:site2.zuzuwp.ml"
 
-
-
+    [frontends.frontend3]
+    entrypoints = ["http", "https"]
+    backend = "backend3"
+    passHostHeader = true
+    [frontends.frontend3.routes]
+        [frontends.frontend3.routes.route0]
+            rule = "Host:guide.museebolo.cf"
 
