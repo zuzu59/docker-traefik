@@ -13,7 +13,7 @@ services:
         labels:
             - traefik.enable:true
             - traefik.port:8080
-            - traefik.backend:traefik
+#            - traefik.backend:traefik
             - traefik.frontend.rule=Host:www.tototutu.ml
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events

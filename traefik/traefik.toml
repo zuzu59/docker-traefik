@@ -15,9 +15,7 @@ logLevel = "DEBUG"
         
 # Admin dashboard
 [api]
-entryPoint = "traefik"
 dashboard = true
-debug = false
 
 [file]
 filename = "/etc/traefik/traefik.toml"
@@ -26,15 +24,13 @@ watch = true
 # rules
 [backends]
     [backends.backend1]
-        [backends.backend1.servers]
-            [backends.backend1.servers.server0]
-                 url = "http://163.172.161.67:8001"
+        [backends.backend1.servers.server0]
+        url = "http://163.172.161.67:8001"
 #                url = "http://z.zufferey.com"
 
-    [backends.backend2]
-        [backends.backend2.servers]
-            [backends.backend2.servers.server0]
-                 url = "http://163.172.161.67:8002"
+#    [backends.backend2]
+#        [backends.backend2.servers.server0]
+#        url = "http://163.172.161.67:8002"
 #                url = "http://51.158.76.194:8001"
 #                url = "http://z.zufferey.com"
 
@@ -45,19 +41,12 @@ watch = true
     entrypoints = ["http", "https"]
     backend = "backend1"
     passHostHeader = true
-    [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
-            rule = "Host:www.tototutu.cf"
+        rule = "Host:www.tototutu.cf"
 
-    [frontends.frontend2]
-    entrypoints = ["http", "https"]
-    backend = "backend2"
-    passHostHeader = true
-    [frontends.frontend2.routes]
-        [frontends.frontend2.routes.route0]
-            rule = "Host:www.tototutu.gq"
-
-
-
-
-
+#    [frontends.frontend2]
+#    entrypoints = ["http", "https"]
+#    backend = "backend2"
+#    passHostHeader = true
+#        [frontends.frontend2.routes.route0]
+#        rule = "Host:www.tototutu.gq"
