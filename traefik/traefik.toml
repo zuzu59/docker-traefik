@@ -1,9 +1,14 @@
+#---------------------------------------------------------
 # Service logs (here debug mode)
+#---------------------------------------------------------
 debug = true
 traefikLogsFile = "/var/log/traefik/traefik.log"
 logLevel = "DEBUG"
 
+
+#---------------------------------------------------------
 # Entrypoints
+#---------------------------------------------------------
 [entryPoints]
     [entryPoints.http]
     address = ":80"
@@ -13,30 +18,63 @@ logLevel = "DEBUG"
 #    address = ":443"
 #        [entryPoints.https.tls]
         
+
+#---------------------------------------------------------
 # Admin dashboard
+#---------------------------------------------------------
 [api]
 dashboard = true
 
-[file]
-filename = "/etc/traefik/traefik.toml"
-watch = true
 
-# rules
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
+
+#---------------------------------------------------------
+# Backends rules
+#---------------------------------------------------------
 [backends]
+    #-----------------------------------------------------
+    # Dashboard traefik
+    #-----------------------------------------------------
+    [backends.traefik]
+        [backends.traefik.servers.server0]
+        url = "http://163.172.161.67:8080"
+
+    #-----------------------------------------------------
+    # Site1
+    #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
         url = "http://163.172.161.67:8001"
-#                url = "http://z.zufferey.com"
 
-#    [backends.backend2]
-#        [backends.backend2.servers.server0]
-#        url = "http://163.172.161.67:8002"
-#                url = "http://51.158.76.194:8001"
-#                url = "http://z.zufferey.com"
+    #-----------------------------------------------------
+    # Site2
+    #-----------------------------------------------------
+    [backends.backend2]
+        [backends.backend2.servers.server0]
+        url = "http://163.172.161.67:8002"
 
 
-
+#---------------------------------------------------------
+# Frontends rules
+#---------------------------------------------------------
 [frontends]
+    #-----------------------------------------------------
+    # Dashboard traefik redirection
+    #-----------------------------------------------------
+    [frontends.frontend0]
+    backend = "traefik"
+        [frontends.frontend0.routes.route0]
+        rule = "Host:www.tototutu.ml"
+
+    #-----------------------------------------------------
+    # Site1 redirection
+    #-----------------------------------------------------
     [frontends.frontend1]
     entrypoints = ["http", "https"]
     backend = "backend1"
@@ -44,9 +82,12 @@ watch = true
         [frontends.frontend1.routes.route0]
         rule = "Host:www.tototutu.cf"
 
-#    [frontends.frontend2]
-#    entrypoints = ["http", "https"]
-#    backend = "backend2"
-#    passHostHeader = true
-#        [frontends.frontend2.routes.route0]
-#        rule = "Host:www.tototutu.gq"
+    #-----------------------------------------------------
+    # Site2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend2]
+    entrypoints = ["http", "https"]
+    backend = "backend2"
+    passHostHeader = true
+        [frontends.frontend2.routes.route0]
+        rule = "Host:www.tototutu.gq"
