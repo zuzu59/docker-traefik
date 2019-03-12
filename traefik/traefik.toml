@@ -1,11 +1,18 @@
-#zf190312.1545
+#zf190312.1642
 
+#---------------------------------------------------------
 # Service logs (here debug mode)
-debug = true
-traefikLogsFile = "/var/log/traefik/traefik.log"
+#---------------------------------------------------------
 logLevel = "DEBUG"
 
+[traefikLog]
+    filePath = "/var/log/traefik/traefik.log"
+
+
+
+#---------------------------------------------------------
 # Entrypoints
+#---------------------------------------------------------
 [entryPoints]
     [entryPoints.http]
     address = ":80"
@@ -17,52 +24,101 @@ logLevel = "DEBUG"
             usersFile = "/etc/traefik/.htpasswd"
 
 
+
+#---------------------------------------------------------
+# Admin dashboard
+#---------------------------------------------------------
+[api]
+    entryPoint = "dash"
+    dashboard = true
+
+
+
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
+
+
+
+
 # Access log
 filePath = "/var/log/traefik/access.log"
 format = "common"
 
 
-[file]
-filename = "/etc/traefik/traefik.toml"
-watch = true
 
 
-# rules
+
+
+
+#---------------------------------------------------------
+# Backends rules
+#---------------------------------------------------------
 [backends]
+    #-----------------------------------------------------
+    # Dashboard traefik
+    #-----------------------------------------------------
+    [backends.backend0]
+        [backends.backend0.servers.server0]
+        url = "http://51.158.76.194:8080"
+
+
+    #-----------------------------------------------------
+    # Site1
+    #-----------------------------------------------------
     [backends.backend1]
-        [backends.backend1.servers]
-            [backends.backend1.servers.server0]
-                url = "http://51.158.76.194:8001"
-#                url = "http://z.zufferey.com"
+        [backends.backend1.servers.server0]
+        url = "http://51.158.76.194:8001"
 
+
+    #-----------------------------------------------------
+    # Site2
+    #-----------------------------------------------------
     [backends.backend2]
-        [backends.backend2.servers]
-            [backends.backend2.servers.server0]
-                url = "http://51.158.76.194:8002"
-#                url = "http://z.zufferey.com"
+        [backends.backend2.servers.server0]
+        url = "http://51.158.76.194:8002"
 
 
 
+#---------------------------------------------------------
+# Frontends rules
+#---------------------------------------------------------
 [frontends]
+    #-----------------------------------------------------
+    # Dashboard traefik redirection
+    #-----------------------------------------------------
+    [frontends.frontend0]
+    entryPoints = ["http", "https"]
+    backend = "backend0"
+        [frontends.frontend0.routes.route0]
+        rule = "Host:site0.zuzuwp.ml"
+
+
+    #-----------------------------------------------------
+    # Site1 redirection
+    #-----------------------------------------------------
     [frontends.frontend1]
-    entrypoints = ["http", "https"]
+    entryPoints = ["http", "https"]
     backend = "backend1"
     passHostHeader = true
-        [frontends.frontend1.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
-#        users = ["test:$apr1$Y4AVt3Xj$Za/4roa3D4C.VLBQ7rXrC0"]
-    [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
-            rule = "Host:site1.zuzuwp.ml"
+        rule = "Host:site1.zuzuwp.ml"
 
+
+    #-----------------------------------------------------
+    # Site2 redirection
+    #-----------------------------------------------------
     [frontends.frontend2]
-    entrypoints = ["http", "https"]
+    entryPoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
-    [frontends.frontend2.routes]
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
         [frontends.frontend2.routes.route0]
-            rule = "Host:site2.zuzuwp.ml"
-
-
-
+        rule = "Host:site2.zuzuwp.ml"
 
