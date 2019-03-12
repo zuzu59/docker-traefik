@@ -1,4 +1,21 @@
-#zf190312.1642
+#zf190312.1705
+
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
+
+
+#---------------------------------------------------------
+# Access log
+#---------------------------------------------------------
+filePath = "/var/log/traefik/access.log"
+format = "common"
+
+
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -35,27 +52,6 @@ logLevel = "DEBUG"
 
 
 #---------------------------------------------------------
-# Configuration file
-#---------------------------------------------------------
-[file]
-    filename = "/etc/traefik/traefik.toml"
-    watch = true
-
-
-
-
-
-# Access log
-filePath = "/var/log/traefik/access.log"
-format = "common"
-
-
-
-
-
-
-
-#---------------------------------------------------------
 # Backends rules
 #---------------------------------------------------------
 [backends]
@@ -72,6 +68,7 @@ format = "common"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
+#        url = "http://z.zufferey.com"
         url = "http://51.158.76.194:8001"
 
 
