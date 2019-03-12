@@ -1,4 +1,4 @@
-#zf190312.1545
+#zf190301.1610
 
 # Service logs (here debug mode)
 debug = true
@@ -9,18 +9,19 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
-
-    [entryPoints.dash]
-    address = ":8080"
-        [entryPoints.dash.auth]
-            [entryPoints.dash.auth.basic]
-            usersFile = "/etc/traefik/.htpasswd"
-
-
+#        [entryPoints.http.redirect]
+#        entryPoint = "https"
+#    [entryPoints.https]
+#    address = ":443"
+#        [entryPoints.https.tls]
+        
 # Access log
 filePath = "/var/log/traefik/access.log"
 format = "common"
 
+# Admin dashboard
+[web]
+address = ":8080"
 
 [file]
 filename = "/etc/traefik/traefik.toml"
@@ -32,13 +33,13 @@ watch = true
     [backends.backend1]
         [backends.backend1.servers]
             [backends.backend1.servers.server0]
-                url = "http://51.158.76.194:8001"
+                url = "http://51.158.76.194:8000"
 #                url = "http://z.zufferey.com"
 
     [backends.backend2]
         [backends.backend2.servers]
             [backends.backend2.servers.server0]
-                url = "http://51.158.76.194:8002"
+                url = "http://51.158.76.194:8001"
 #                url = "http://z.zufferey.com"
 
 
@@ -48,12 +49,9 @@ watch = true
     entrypoints = ["http", "https"]
     backend = "backend1"
     passHostHeader = true
-        [frontends.frontend1.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
-#        users = ["test:$apr1$Y4AVt3Xj$Za/4roa3D4C.VLBQ7rXrC0"]
     [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
-            rule = "Host:site1.zuzuwp.ml"
+            rule = "Host:site0.zuzuwp.ml"
 
     [frontends.frontend2]
     entrypoints = ["http", "https"]
@@ -61,7 +59,7 @@ watch = true
     passHostHeader = true
     [frontends.frontend2.routes]
         [frontends.frontend2.routes.route0]
-            rule = "Host:site2.zuzuwp.ml"
+            rule = "Host:site1.zuzuwp.ml"
 
 
 
