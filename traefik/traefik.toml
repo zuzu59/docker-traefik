@@ -1,4 +1,4 @@
-#zf190316.1020
+#zf190316.1038
 
 #---------------------------------------------------------
 # Configuration file
@@ -58,8 +58,8 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     # Dashboard traefik
     #-----------------------------------------------------
-    [backends.backend0]
-        [backends.backend0.servers.server0]
+    [backends.backend_dash]
+        [backends.backend_dash.servers.server0]
         url = "http://163.172.131.215:8080"
 
 
@@ -103,11 +103,11 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     # Dashboard traefik redirection
     #-----------------------------------------------------
-    [frontends.frontend0]
+    [frontends.frontend_dash]
     entryPoints = ["http", "https"]
-    backend = "backend0"
-        [frontends.frontend0.routes.route0]
-        rule = "Host:site0.zuzuwp.ml"
+    backend = "backend_dash"
+        [frontends.frontend_dash.routes.route0]
+        rule = "Host:traefik.makerspace-lausanne.ch"
 
 
     #-----------------------------------------------------
@@ -139,7 +139,7 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
-        [frontends.frontend1.routes.route0]
+        [frontends.frontend2.routes.route0]
         rule = "Host:www2.makerspace-lausanne.ch"
 
 
@@ -150,7 +150,7 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend3"
     passHostHeader = true
-        [frontends.frontend2.auth.basic]
+        [frontends.frontend3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
         [frontends.frontend3.routes.route0]
