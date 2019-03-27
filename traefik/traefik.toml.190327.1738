@@ -1,4 +1,4 @@
-#zf190327.1743
+#zf190312.1730
 
 #---------------------------------------------------------
 # Configuration file
@@ -58,18 +58,9 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     # Dashboard traefik
     #-----------------------------------------------------
-    [backends.backend_dash]
-        [backends.backend_dash.servers.server0]
-        url = "http://51.158.76.194:8080"
-
-
-    #-----------------------------------------------------
-    # Site0
-    #-----------------------------------------------------
     [backends.backend0]
         [backends.backend0.servers.server0]
-#        url = "http://z.zufferey.com"
-        url = "http://51.158.76.194:8000"
+        url = "http://51.158.76.194:8080"
 
 
     #-----------------------------------------------------
@@ -77,6 +68,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
+#        url = "http://z.zufferey.com"
         url = "http://51.158.76.194:8001"
 
 
@@ -85,15 +77,9 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend2]
         [backends.backend2.servers.server0]
+#        url = "http://51.158.76.194:8880"
         url = "http://51.158.76.194:8002"
 
-
-    #-----------------------------------------------------
-    # Site3
-    #-----------------------------------------------------
-    [backends.backend3]
-        [backends.backend3.servers.server0]
-        url = "http://51.158.76.194:8003"
 
 
 #---------------------------------------------------------
@@ -103,22 +89,11 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     # Dashboard traefik redirection
     #-----------------------------------------------------
-    [frontends.frontend_dash]
-    entryPoints = ["http", "https"]
-    backend = "backend_dash"
-        [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik.makerspace-lausanne.ch"
-
-
-    #-----------------------------------------------------
-    # Site0 redirection
-    #-----------------------------------------------------
     [frontends.frontend0]
     entryPoints = ["http", "https"]
     backend = "backend0"
-    passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:www.zuzuwp.ml"
+        rule = "Host:site0.zuzuwp.ml"
 
 
     #-----------------------------------------------------
@@ -139,20 +114,9 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
-        [frontends.frontend2.routes.route0]
-        rule = "Host:site2.zuzuwp.ml"
-
-
-    #-----------------------------------------------------
-    # Site3 redirection
-    #-----------------------------------------------------
-    [frontends.frontend3]
-    entryPoints = ["http", "https"]
-    backend = "backend3"
-    passHostHeader = true
-        [frontends.frontend3.auth.basic]
+        [frontends.frontend2.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
-        [frontends.frontend3.routes.route0]
-        rule = "Host:site3.zuzuwp.ml"
+        [frontends.frontend2.routes.route0]
+        rule = "Host:site2.zuzuwp.ml"
 
