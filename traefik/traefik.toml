@@ -150,8 +150,8 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend3"
     passHostHeader = true
-        [frontends.frontend3.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+#        [frontends.frontend3.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
 
         [frontends.frontend3.routes.route0]
         rule = "Host:site3.zuzuwp.ml"
