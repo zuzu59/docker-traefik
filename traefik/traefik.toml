@@ -1,4 +1,4 @@
-#zf190301.1610
+#zf190307:1528
 
 # Service logs (here debug mode)
 debug = true
@@ -33,14 +33,12 @@ watch = true
     [backends.backend1]
         [backends.backend1.servers]
             [backends.backend1.servers.server0]
-                url = "http://51.158.76.194:8000"
-#                url = "http://z.zufferey.com"
+                url = "http://51.15.204.133:8000"
 
     [backends.backend2]
         [backends.backend2.servers]
             [backends.backend2.servers.server0]
                 url = "http://51.158.76.194:8001"
-#                url = "http://z.zufferey.com"
 
 
 
@@ -51,7 +49,7 @@ watch = true
     passHostHeader = true
     [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
-            rule = "Host:site0.zuzuwp.ml"
+            rule = "Host:www.fablab-renens.ch"
 
     [frontends.frontend2]
     entrypoints = ["http", "https"]
