@@ -1,4 +1,4 @@
-#zf190417.1653
+#zf190417.1802
 
 #---------------------------------------------------------
 # Configuration file
@@ -33,6 +33,11 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
+        [entryPoints.http.auth]
+            [entryPoints.http.auth.basic]
+            usersFile = "/etc/traefik/.htpasswd"
+
+
 
     [entryPoints.dash]
     address = ":8080"
