@@ -1,4 +1,4 @@
-#zf190327.1743
+#zf190417.1653
 
 #---------------------------------------------------------
 # Configuration file
@@ -69,7 +69,7 @@ logLevel = "DEBUG"
     [backends.backend0]
         [backends.backend0.servers.server0]
 #        url = "http://z.zufferey.com"
-        url = "http://51.158.76.194:8000"
+        url = "http://10.0.2.202:5000"
 
 
     #-----------------------------------------------------
@@ -118,7 +118,7 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:www.zuzuwp.ml"
+        rule = "Host:prob.86.119.40.68.nip.io"
 
 
     #-----------------------------------------------------
