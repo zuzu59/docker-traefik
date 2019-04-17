@@ -1,4 +1,4 @@
-#zf190417.1125
+#zf190417.1137
 
 #---------------------------------------------------------
 # Configuration file
@@ -126,6 +126,13 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend0_1.routes.route0]
         rule = "Host:www.makerspace-renens.ch"
+
+    [frontends.frontend0_2]
+    entryPoints = ["http", "https"]
+    backend = "backend0"
+    passHostHeader = true
+        [frontends.frontend0_2.routes.route0]
+        rule = "Host:www.maker-evolution.ch"
 
 
     #-----------------------------------------------------
