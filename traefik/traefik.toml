@@ -1,10 +1,10 @@
 #---------------------------------------------------------
 # Service logs (here debug mode)
 #---------------------------------------------------------
-debug = true
-traefikLogsFile = "/var/log/traefik/traefik.log"
 logLevel = "DEBUG"
 
+[traefikLog]
+    filePath = "/var/log/traefik/traefik.log"
 
 #---------------------------------------------------------
 # Entrypoints
@@ -14,24 +14,53 @@ logLevel = "DEBUG"
     address = ":80"
 #        [entryPoints.http.redirect]
 #        entryPoint = "https"
-#    [entryPoints.https]
-#    address = ":443"
-#        [entryPoints.https.tls]
-        
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+#        [[entryPoints.https.tls.certificates]]
+#            CertFile = "integration/fixtures/https/snitest.com.cert"
+#            KeyFile = "integration/fixtures/https/snitest.com.key"
+#        [[entryPoints.https.tls.certificates]]
+#            CertFile = "integration/fixtures/https/snitest.org.cert"
+#            KeyFile = "integration/fixtures/https/snitest.org.key"
+
+    [entryPoints.dash]
+    address = ":8080"
+        [entryPoints.dash.auth]
+            [entryPoints.dash.auth.basic]
+            usersFile = "/etc/traefik/.htpasswd"
 
 #---------------------------------------------------------
 # Admin dashboard
 #---------------------------------------------------------
 [api]
-dashboard = true
+    entryPoint = "dash"
+    dashboard = true
 
+#---------------------------------------------------------
+# Enable ACME (Let's Encrypt): automatic SSL.
+#---------------------------------------------------------
+[acme]
+    email = "louis.munier17@gmail.com"
+    storage = "acme.json"
+    onHostRule = true
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    entryPoint = "https"
+
+    [acme.httpChallenge]
+    entryPoint = "http"
+
+[[acme.domains]]
+    main = "tototutu.cf"
+[[acme.domains]]
+    main = "tototutu.gq"
 
 #---------------------------------------------------------
 # Configuration file
 #---------------------------------------------------------
 [file]
-    filename = "/etc/traefik/traefik.toml"
-    watch = true
+#    filename = "/etc/traefik/traefik.toml"
+#    watch = true
 
 
 #---------------------------------------------------------
@@ -41,8 +70,8 @@ dashboard = true
     #-----------------------------------------------------
     # Dashboard traefik
     #-----------------------------------------------------
-    [backends.traefik]
-        [backends.traefik.servers.server0]
+    [backends.backend0]
+        [backends.backend0.servers.server0]
         url = "http://163.172.161.67:8080"
 
     #-----------------------------------------------------
@@ -68,7 +97,8 @@ dashboard = true
     # Dashboard traefik redirection
     #-----------------------------------------------------
     [frontends.frontend0]
-    backend = "traefik"
+    entryPoints = ["http", "https"]
+    backend = "backend0"
         [frontends.frontend0.routes.route0]
         rule = "Host:www.tototutu.ml"
 
@@ -76,7 +106,7 @@ dashboard = true
     # Site1 redirection
     #-----------------------------------------------------
     [frontends.frontend1]
-    entrypoints = ["http", "https"]
+    entryPoints = ["http", "https"]
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
@@ -86,8 +116,11 @@ dashboard = true
     # Site2 redirection
     #-----------------------------------------------------
     [frontends.frontend2]
-    entrypoints = ["http", "https"]
+    entryPoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
         [frontends.frontend2.routes.route0]
         rule = "Host:www.tototutu.gq"

@@ -5,14 +5,17 @@ services:
         image: traefik           # The official Traefik docker image
         container_name: traefik
         restart: always
-        command: --docker        # Enables the web UI and tells Traefik to listen to docker
+        command: --docker        # Tells Traefik to listen to docker
         ports:
-            - "80:80"            # HTTP port
+            - "80:80"
             - "443:443"          # HTTPS port
-            - "8080:8080"        # Traefik dashboard port
+            - "8080:8080"
+#        expose:
+#            - 8080               # Traefik dashboard port
         labels:
             - traefik.enable:true
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
             - $PWD/traefik:/etc/traefik
             - $PWD/log:/var/log/traefik
+            - $PWD/traefik/acme.json:/acme.json
