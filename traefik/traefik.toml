@@ -14,8 +14,8 @@ defaultEntryPoints = ["http", "https"]
 [entryPoints]
     [entryPoints.http]
     address = ":80"
-#        [entryPoints.http.redirect]
-#        entryPoint = "https"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
     [entryPoints.https]
     address = ":443"
         [entryPoints.https.tls]
@@ -36,10 +36,21 @@ defaultEntryPoints = ["http", "https"]
 
 
 #---------------------------------------------------------
+# Enable Docker backend
+#---------------------------------------------------------
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "tests-traefik.ml"
+watch = true
+swarmmode = true
+exposedbydefault = false
+
+
+#---------------------------------------------------------
 # Enable ACME (Let's Encrypt): automatic SSL.
 #---------------------------------------------------------
 [acme]
-    email = "louis.munier17@gmail.com"
+    email = "sdfepfl+traefikAcme@gmail.com"
     storage = "/etc/traefik/acme.json"
     acmeLogging = true
     onDemand = false
@@ -48,7 +59,7 @@ defaultEntryPoints = ["http", "https"]
     entryPoint = "https"
 
     [acme.httpChallenge]
-    entryPoint = "http"
+        entryPoint = "http"
 
 [[acme.domains]]
     main = "tests-traefik.ml"
@@ -61,18 +72,6 @@ defaultEntryPoints = ["http", "https"]
 [[acme.domains]]
     main = "tototutu.ml"
     sans = ["www.tototutu.ml"]
-#[[acme.domains]]
-#    main = "db.site1"
-#[[acme.domains]]
-#    main = "wordpress.site1"
-#[[acme.domains]]
-#    main = "phpmyadmin.site1"
-#[[acme.domains]]
-#    main = "db.site2"
-#[[acme.domains]]
-#    main = "wordpress.site2"
-#[[acme.domains]]
-#    main = "phpmyadmin.site2"
 
 
 #---------------------------------------------------------
