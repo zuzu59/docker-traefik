@@ -2,9 +2,11 @@
 # Service logs (here debug mode)
 #---------------------------------------------------------
 logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
 
 [traefikLog]
     filePath = "/var/log/traefik/traefik.log"
+
 
 #---------------------------------------------------------
 # Entrypoints
@@ -17,18 +19,13 @@ logLevel = "DEBUG"
     [entryPoints.https]
     address = ":443"
         [entryPoints.https.tls]
-#        [[entryPoints.https.tls.certificates]]
-#            CertFile = "integration/fixtures/https/snitest.com.cert"
-#            KeyFile = "integration/fixtures/https/snitest.com.key"
-#        [[entryPoints.https.tls.certificates]]
-#            CertFile = "integration/fixtures/https/snitest.org.cert"
-#            KeyFile = "integration/fixtures/https/snitest.org.key"
 
     [entryPoints.dash]
     address = ":8080"
         [entryPoints.dash.auth]
             [entryPoints.dash.auth.basic]
             usersFile = "/etc/traefik/.htpasswd"
+
 
 #---------------------------------------------------------
 # Admin dashboard
@@ -37,30 +34,53 @@ logLevel = "DEBUG"
     entryPoint = "dash"
     dashboard = true
 
+
 #---------------------------------------------------------
 # Enable ACME (Let's Encrypt): automatic SSL.
 #---------------------------------------------------------
 [acme]
     email = "louis.munier17@gmail.com"
-    storage = "acme.json"
+    storage = "/etc/traefik/acme.json"
+    acmeLogging = true
+    onDemand = false
     onHostRule = true
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.httpChallenge]
     entryPoint = "http"
 
 [[acme.domains]]
+    main = "tests-traefik.ml"
+[[acme.domains]]
     main = "tototutu.cf"
+    sans = ["www.tototutu.cf"]
 [[acme.domains]]
     main = "tototutu.gq"
+    sans = ["www.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.ml"
+    sans = ["www.tototutu.ml"]
+#[[acme.domains]]
+#    main = "db.site1"
+#[[acme.domains]]
+#    main = "wordpress.site1"
+#[[acme.domains]]
+#    main = "phpmyadmin.site1"
+#[[acme.domains]]
+#    main = "db.site2"
+#[[acme.domains]]
+#    main = "wordpress.site2"
+#[[acme.domains]]
+#    main = "phpmyadmin.site2"
+
 
 #---------------------------------------------------------
 # Configuration file
 #---------------------------------------------------------
 [file]
-#    filename = "/etc/traefik/traefik.toml"
-#    watch = true
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
 
 
 #---------------------------------------------------------
