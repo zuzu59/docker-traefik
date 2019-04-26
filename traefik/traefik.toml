@@ -1,4 +1,4 @@
-#zf190426.1511
+#zf190426.1547
 
 #---------------------------------------------------------
 # Configuration file
@@ -22,11 +22,6 @@ logLevel = "DEBUG"
 
 [traefikLog]
     filePath = "/var/log/traefik/traefik.log"
-
-
-
-
-
 
 
 #---------------------------------------------------------
@@ -57,8 +52,6 @@ logLevel = "DEBUG"
     debug = true
 
 
-
-
 #---------------------------------------------------------
 # Enable ACME (Let's Encrypt): automatic SSL.
 #---------------------------------------------------------
@@ -68,24 +61,22 @@ logLevel = "DEBUG"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
         entryPoint = "http"
 
-#[[acme.domains]]
-#    main = "tests-traefik.ml"
 [[acme.domains]]
     main = "tototutu.cf"
-    sans = ["www1.tototutu.cf"]
+    sans = ["www.tototutu.cf"]
 [[acme.domains]]
     main = "tototutu.gq"
-    sans = ["www1.tototutu.gq"]
+    sans = ["www.tototutu.gq"]
 [[acme.domains]]
     main = "tototutu.ml"
-    sans = ["www1.tototutu.ml"]
+    sans = ["www.tototutu.ml"]
 
 
 
@@ -133,7 +124,7 @@ logLevel = "DEBUG"
     backend = "backend_dash"
     passHostHeader = true
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:www1.tototutu.ml"
+        rule = "Host:www.tototutu.ml"
 
 
     #-----------------------------------------------------
@@ -144,7 +135,7 @@ logLevel = "DEBUG"
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:www1.tototutu.cf"
+        rule = "Host:www.tototutu.cf"
 
 
     #-----------------------------------------------------
@@ -154,8 +145,8 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend2"
     passHostHeader = true
+        [frontends.frontend2.routes.route0]
+        rule = "Host:www.tototutu.gq"
+
         [frontends.frontend2.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
-
-        [frontends.frontend2.routes.route0]
-        rule = "Host:www1.tototutu.gq"
