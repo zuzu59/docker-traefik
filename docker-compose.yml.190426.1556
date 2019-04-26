@@ -1,15 +1,15 @@
-#zf190426.1608
+#zf190426.1504
 
 version: "3"
 
 services:
   proxy:
-    image: traefik:alpine
+    image: traefik:latest           # The official Traefik docker image
     restart: always
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:8080:8080"
+      - "8080:8080"
     labels:
       - "traefik.enable=true"
       - "traefik.port=8080"
