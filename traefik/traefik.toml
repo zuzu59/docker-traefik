@@ -1,3 +1,4 @@
+#zf190425.1524
 #---------------------------------------------------------
 # Service logs (here debug mode)
 #---------------------------------------------------------
@@ -33,17 +34,19 @@ defaultEntryPoints = ["http", "https"]
 [api]
     entryPoint = "dash"
     dashboard = true
+    debug = true
 
 
 #---------------------------------------------------------
 # Enable Docker backend
 #---------------------------------------------------------
-[docker]
-endpoint = "unix:///var/run/docker.sock"
-domain = "tests-traefik.ml"
-watch = true
-swarmmode = true
-exposedbydefault = false
+#[docker]
+#endpoint = "unix:///var/run/docker.sock"
+#domain = "tests-traefik.ml"
+#watch = true
+#swarmmode = true
+#exposedbydefault = true
+#network = "web"
 
 
 #---------------------------------------------------------
@@ -55,23 +58,24 @@ exposedbydefault = false
     acmeLogging = true
     onDemand = false
     onHostRule = true
-    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
-    [acme.httpChallenge]
+    [acme.tlsChallenge]
         entryPoint = "http"
 
-[[acme.domains]]
-    main = "tests-traefik.ml"
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
 [[acme.domains]]
     main = "tototutu.cf"
-    sans = ["www.tototutu.cf"]
+    sans = ["www1.tototutu.cf"]
 [[acme.domains]]
     main = "tototutu.gq"
-    sans = ["www.tototutu.gq"]
+    sans = ["www1.tototutu.gq"]
 [[acme.domains]]
     main = "tototutu.ml"
-    sans = ["www.tototutu.ml"]
+    sans = ["www1.tototutu.ml"]
 
 
 #---------------------------------------------------------
@@ -118,8 +122,9 @@ exposedbydefault = false
     [frontends.frontend0]
     entryPoints = ["http", "https"]
     backend = "backend0"
+    passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:www.tototutu.ml"
+        rule = "Host:www1.tototutu.ml"
 
     #-----------------------------------------------------
     # Site1 redirection
@@ -129,7 +134,7 @@ exposedbydefault = false
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:www.tototutu.cf"
+        rule = "Host:www1.tototutu.cf"
 
     #-----------------------------------------------------
     # Site2 redirection
@@ -142,4 +147,4 @@ exposedbydefault = false
         usersfile = "/etc/traefik/.htpasswd"
 
         [frontends.frontend2.routes.route0]
-        rule = "Host:www.tototutu.gq"
+        rule = "Host:www1.tototutu.gq"
