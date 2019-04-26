@@ -1,32 +1,12 @@
-#zf190426.1511
-
-#---------------------------------------------------------
-# Configuration file
-#---------------------------------------------------------
-[file]
-    filename = "/etc/traefik/traefik.toml"
-    watch = true
-
-
-#---------------------------------------------------------
-# Access log
-#---------------------------------------------------------
-filePath = "/var/log/traefik/access.log"
-format = "common"
-
-
+#zf190425.1524
 #---------------------------------------------------------
 # Service logs (here debug mode)
 #---------------------------------------------------------
 logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
 
 [traefikLog]
     filePath = "/var/log/traefik/traefik.log"
-
-
-
-
-
 
 
 #---------------------------------------------------------
@@ -57,6 +37,16 @@ logLevel = "DEBUG"
     debug = true
 
 
+#---------------------------------------------------------
+# Enable Docker backend
+#---------------------------------------------------------
+#[docker]
+#endpoint = "unix:///var/run/docker.sock"
+#domain = "tests-traefik.ml"
+#watch = true
+#swarmmode = true
+#exposedbydefault = true
+#network = "web"
 
 
 #---------------------------------------------------------
@@ -88,20 +78,24 @@ logLevel = "DEBUG"
     sans = ["www1.tototutu.ml"]
 
 
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
 
 
 #---------------------------------------------------------
 # Backends rules
 #---------------------------------------------------------
 [backends]
-
     #-----------------------------------------------------
     # Dashboard traefik
     #-----------------------------------------------------
-    [backends.backend_dash]
-        [backends.backend_dash.servers.server0]
+    [backends.backend0]
+        [backends.backend0.servers.server0]
         url = "http://163.172.161.67:8080"
-
 
     #-----------------------------------------------------
     # Site1
@@ -109,7 +103,6 @@ logLevel = "DEBUG"
     [backends.backend1]
         [backends.backend1.servers.server0]
         url = "http://163.172.161.67:8001"
-
 
     #-----------------------------------------------------
     # Site2
@@ -119,22 +112,19 @@ logLevel = "DEBUG"
         url = "http://163.172.161.67:8002"
 
 
-
 #---------------------------------------------------------
 # Frontends rules
 #---------------------------------------------------------
 [frontends]
-
     #-----------------------------------------------------
     # Dashboard traefik redirection
     #-----------------------------------------------------
-    [frontends.frontend_dash]
+    [frontends.frontend0]
     entryPoints = ["http", "https"]
-    backend = "backend_dash"
+    backend = "backend0"
     passHostHeader = true
-        [frontends.frontend_dash.routes.route0]
+        [frontends.frontend0.routes.route0]
         rule = "Host:www1.tototutu.ml"
-
 
     #-----------------------------------------------------
     # Site1 redirection
@@ -145,7 +135,6 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
         rule = "Host:www1.tototutu.cf"
-
 
     #-----------------------------------------------------
     # Site2 redirection
