@@ -1,4 +1,4 @@
-#zf190429.1607
+#zf190417.1802
 
 #---------------------------------------------------------
 # Configuration file
@@ -65,7 +65,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend_dash]
         [backends.backend_dash.servers.server0]
-        url = "http://localhost:8080"
+        url = "http://51.158.76.194:8080"
 
 
     #-----------------------------------------------------
@@ -73,9 +73,32 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend0]
         [backends.backend0.servers.server0]
-        url = "http://ressenti-paris.idev-fsd.ml:5000"
+#        url = "http://z.zufferey.com"
+        url = "http://10.0.2.202:5000"
 
 
+    #-----------------------------------------------------
+    # Site1
+    #-----------------------------------------------------
+    [backends.backend1]
+        [backends.backend1.servers.server0]
+        url = "http://51.158.76.194:8001"
+
+
+    #-----------------------------------------------------
+    # Site2
+    #-----------------------------------------------------
+    [backends.backend2]
+        [backends.backend2.servers.server0]
+        url = "http://51.158.76.194:8002"
+
+
+    #-----------------------------------------------------
+    # Site3
+    #-----------------------------------------------------
+    [backends.backend3]
+        [backends.backend3.servers.server0]
+        url = "http://51.158.76.194:8003"
 
 
 #---------------------------------------------------------
@@ -89,7 +112,7 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend_dash"
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik-ressenti--paris.idev-fsd.ml"
+        rule = "Host:traefik.makerspace-lausanne.ch"
 
 
     #-----------------------------------------------------
@@ -100,8 +123,41 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:ressenti-paris.idev-fsd.ml"
-        [frontends.frontend3.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:prob.86.119.40.68.nip.io"
 
+
+    #-----------------------------------------------------
+    # Site1 redirection
+    #-----------------------------------------------------
+    [frontends.frontend1]
+    entryPoints = ["http", "https"]
+    backend = "backend1"
+    passHostHeader = true
+        [frontends.frontend1.routes.route0]
+        rule = "Host:site1.zuzuwp.ml"
+
+
+    #-----------------------------------------------------
+    # Site2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend2]
+    entryPoints = ["http", "https"]
+    backend = "backend2"
+    passHostHeader = true
+        [frontends.frontend2.routes.route0]
+        rule = "Host:site2.zuzuwp.ml"
+
+
+    #-----------------------------------------------------
+    # Site3 redirection
+    #-----------------------------------------------------
+    [frontends.frontend3]
+    entryPoints = ["http", "https"]
+    backend = "backend3"
+    passHostHeader = true
+#        [frontends.frontend3.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+        [frontends.frontend3.routes.route0]
+        rule = "Host:site3.zuzuwp.ml"
 
