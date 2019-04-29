@@ -1,4 +1,4 @@
-#zf190429.1607
+#zf190429.1722
 
 #---------------------------------------------------------
 # Configuration file
@@ -73,7 +73,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend0]
         [backends.backend0.servers.server0]
-        url = "http://ressenti-paris.idev-fsd.ml:5000"
+        url = "http://ressenti-paris2.idev-fsd.ml:5000"
 
 
 
@@ -89,7 +89,7 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend_dash"
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik-ressenti--paris.idev-fsd.ml"
+        rule = "Host:traefik-ressenti--paris2.idev-fsd.ml"
 
 
     #-----------------------------------------------------
@@ -100,7 +100,7 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:ressenti-paris.idev-fsd.ml"
+        rule = "Host:ressenti-paris2.idev-fsd.ml"
         [frontends.frontend3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
