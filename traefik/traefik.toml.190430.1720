@@ -1,4 +1,4 @@
-#zf190430.1753
+#zf190430.1140
 
 #---------------------------------------------------------
 # Configuration file
@@ -41,9 +41,9 @@ logLevel = "DEBUG"
 
     [entryPoints.dash]
     address = ":8080"
-#        [entryPoints.dash.auth]
-#            [entryPoints.dash.auth.basic]
-#            usersFile = "/etc/traefik/.htpasswd"
+        [entryPoints.dash.auth]
+            [entryPoints.dash.auth.basic]
+            usersFile = "/etc/traefik/.htpasswd"
 
 
 
@@ -65,7 +65,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend_dash]
         [backends.backend_dash.servers.server0]
-        url = "http://proxy:8080"
+        url = "http://localhost:8080"
 
 
     #-----------------------------------------------------
@@ -81,7 +81,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
-        url = "http://lighttpd:80"
+        url = "http://www-ressenti-paris.idev-fsd.ml:8081"
 
 
 
@@ -98,9 +98,7 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend_dash"
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik-ressenti-paris.idev-fsd.ml"
-        [frontends.frontend_dash.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:traefik-ressenti--paris.idev-fsd.ml"
 
 
     #-----------------------------------------------------
@@ -112,7 +110,7 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
         rule = "Host:ressenti-paris.idev-fsd.ml"
-        [frontends.frontend0.auth.basic]
+        [frontends.frontend3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
 
