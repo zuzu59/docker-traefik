@@ -1,4 +1,4 @@
-#zf190501.1450
+#zf190501.1600
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -97,7 +97,15 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
-        url = "http://163.172.161.67:8001"
+        url = "http://wordpress1:80"
+
+
+    #-----------------------------------------------------
+    # Db1
+    #-----------------------------------------------------
+    [backends.backend_db1]
+        [backends.backend_db1.servers.server0]
+        url = "http://phpmyadmin1:80"
 
 
     #-----------------------------------------------------
@@ -105,7 +113,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend2]
         [backends.backend2.servers.server0]
-        url = "http://163.172.161.67:8002"
+        url = "http://wordpress2:80"
 
 
     #-----------------------------------------------------
@@ -113,7 +121,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend_db2]
         [backends.backend_db2.servers.server0]
-        url = "http://db:9192"
+        url = "http://phpmyadmin2:80"
 
 
 
@@ -144,6 +152,20 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
         rule = "Host:www.tototutu.cf"
+
+
+    #-----------------------------------------------------
+    # Db1 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db1]
+    entryPoints = ["http", "https"]
+    backend = "backend_db1"
+    passHostHeader = true
+        [frontends.frontend_db1.routes.route0]
+        rule = "Host:db.tototutu.cf"
+
+#        [frontends.frontend_db1.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
 
 
     #-----------------------------------------------------

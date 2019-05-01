@@ -1,4 +1,4 @@
-#zf190501.1447
+#zf190501.1602
 
 version: "3"
 
@@ -19,7 +19,7 @@ services:
       - "$PWD/.htpasswd:/etc/traefik/.htpasswd"
       - "$PWD/log:/var/log/traefik"
     networks:
-      - traefik
+      - frontend
 networks:
-  traefik:
-    external: true
+    frontend:
+        external: true
