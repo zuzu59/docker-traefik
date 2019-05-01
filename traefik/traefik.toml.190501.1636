@@ -1,4 +1,4 @@
-#zf190501.1823
+#zf190501.1600
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -64,34 +64,18 @@ logLevel = "DEBUG"
         entryPoint = "http"
 
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["traefik.tests-traefik.ml"]
+    main = "tototutu.cf"
+    sans = ["www.tototutu.cf"]
+[[acme.domains]]
+    main = "tototutu.gq"
+    sans = ["www.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.gq"
+    sans = ["db.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.ml"
+    sans = ["www.tototutu.ml"]
 
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site1.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site2.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site3.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site4.tests-traefik.ml"]
-
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db1.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db2.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db3.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db4.tests-traefik.ml"]
 
 
 
@@ -115,6 +99,7 @@ logLevel = "DEBUG"
         [backends.backend1.servers.server0]
         url = "http://wordpress1:80"
 
+
     #-----------------------------------------------------
     # Db1
     #-----------------------------------------------------
@@ -130,43 +115,13 @@ logLevel = "DEBUG"
         [backends.backend2.servers.server0]
         url = "http://wordpress2:80"
 
+
     #-----------------------------------------------------
     # Db2
     #-----------------------------------------------------
     [backends.backend_db2]
         [backends.backend_db2.servers.server0]
         url = "http://phpmyadmin2:80"
-
-
-    #-----------------------------------------------------
-    # Site3
-    #-----------------------------------------------------
-    [backends.backend3]
-        [backends.backend3.servers.server0]
-        url = "http://wordpress3:80"
-
-    #-----------------------------------------------------
-    # Db3
-    #-----------------------------------------------------
-    [backends.backend_db3]
-        [backends.backend_db3.servers.server0]
-        url = "http://phpmyadmin3:80"
-
-
-    #-----------------------------------------------------
-    # Site4
-    #-----------------------------------------------------
-    [backends.backend4]
-        [backends.backend4.servers.server0]
-        url = "http://wordpress4:80"
-
-    #-----------------------------------------------------
-    # Db4
-    #-----------------------------------------------------
-    [backends.backend_db4]
-        [backends.backend_db4.servers.server0]
-        url = "http://phpmyadmin4:80"
-
 
 
 
@@ -183,10 +138,9 @@ logLevel = "DEBUG"
     backend = "backend_dash"
     passHostHeader = true
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik.tests-traefik.ml"
+        rule = "Host:www.tototutu.ml"
         [frontends.frontend_dash.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
-
 
 
     #-----------------------------------------------------
@@ -197,9 +151,8 @@ logLevel = "DEBUG"
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:site1.tests-traefik.ml"
-#        [frontends.frontend1.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:www.tototutu.cf"
+
 
     #-----------------------------------------------------
     # Db1 redirection
@@ -209,11 +162,10 @@ logLevel = "DEBUG"
     backend = "backend_db1"
     passHostHeader = true
         [frontends.frontend_db1.routes.route0]
-        rule = "Host:db1.tests-traefik.ml"
-        [frontends.frontend_db1.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:db.tototutu.cf"
 
-
+#        [frontends.frontend_db1.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
 
 
     #-----------------------------------------------------
@@ -224,9 +176,11 @@ logLevel = "DEBUG"
     backend = "backend2"
     passHostHeader = true
         [frontends.frontend2.routes.route0]
-        rule = "Host:site2.tests-traefik.ml"
-#        [frontends.frontend2.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:www.tototutu.gq"
+
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
 
     #-----------------------------------------------------
     # Db2 redirection
@@ -236,59 +190,7 @@ logLevel = "DEBUG"
     backend = "backend_db2"
     passHostHeader = true
         [frontends.frontend_db2.routes.route0]
-        rule = "Host:db2.tests-traefik.ml"
-        [frontends.frontend_db2.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:db.tototutu.gq"
 
-
-
-
-    #-----------------------------------------------------
-    # Site3 redirection
-    #-----------------------------------------------------
-    [frontends.frontend3]
-    entryPoints = ["http", "https"]
-    backend = "backend3"
-    passHostHeader = true
-        [frontends.frontend3.routes.route0]
-        rule = "Host:site3.tests-traefik.ml"
-#        [frontends.frontend3.auth.basic]
+#        [frontends.frontend_db2.auth.basic]
 #        usersfile = "/etc/traefik/.htpasswd"
-
-    #-----------------------------------------------------
-    # Db3 redirection
-    #-----------------------------------------------------
-    [frontends.frontend_db3]
-    entryPoints = ["http", "https"]
-    backend = "backend_db3"
-    passHostHeader = true
-        [frontends.frontend_db3.routes.route0]
-        rule = "Host:db3.tests-traefik.ml"
-        [frontends.frontend_db3.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
-
-
-
-    #-----------------------------------------------------
-    # Site4 redirection
-    #-----------------------------------------------------
-    [frontends.frontend4]
-    entryPoints = ["http", "https"]
-    backend = "backend4"
-    passHostHeader = true
-        [frontends.frontend4.routes.route0]
-        rule = "Host:site4.tests-traefik.ml"
-#        [frontends.frontend4.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
-
-    #-----------------------------------------------------
-    # Db4 redirection
-    #-----------------------------------------------------
-    [frontends.frontend_db4]
-    entryPoints = ["http", "https"]
-    backend = "backend_db4"
-    passHostHeader = true
-        [frontends.frontend_db4.routes.route0]
-        rule = "Host:db4.tests-traefik.ml"
-        [frontends.frontend_db4.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"

@@ -1,4 +1,4 @@
-#zf190501.1823
+#zf190501.1727
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -66,7 +66,9 @@ logLevel = "DEBUG"
 [[acme.domains]]
     main = "tests-traefik.ml"
     sans = ["traefik.tests-traefik.ml"]
-
+[[acme.domains]]
+    main = "tests-traefik.ml"
+    sans = ["site.tests-traefik.ml"]
 [[acme.domains]]
     main = "tests-traefik.ml"
     sans = ["site1.tests-traefik.ml"]
@@ -78,8 +80,7 @@ logLevel = "DEBUG"
     sans = ["site3.tests-traefik.ml"]
 [[acme.domains]]
     main = "tests-traefik.ml"
-    sans = ["site4.tests-traefik.ml"]
-
+    sans = ["db.tests-traefik.ml"]
 [[acme.domains]]
     main = "tests-traefik.ml"
     sans = ["db1.tests-traefik.ml"]
@@ -89,10 +90,6 @@ logLevel = "DEBUG"
 [[acme.domains]]
     main = "tests-traefik.ml"
     sans = ["db3.tests-traefik.ml"]
-[[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db4.tests-traefik.ml"]
-
 
 
 #---------------------------------------------------------
@@ -109,11 +106,28 @@ logLevel = "DEBUG"
 
 
     #-----------------------------------------------------
+    # Site0
+    #-----------------------------------------------------
+    [backends.backend0]
+        [backends.backend0.servers.server0]
+        url = "http://wordpress:80"
+
+
+    #-----------------------------------------------------
+    # Db0
+    #-----------------------------------------------------
+    [backends.backend_db0]
+        [backends.backend_db0.servers.server0]
+        url = "http://phpmyadmin:80"
+
+
+    #-----------------------------------------------------
     # Site1
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
         url = "http://wordpress1:80"
+
 
     #-----------------------------------------------------
     # Db1
@@ -130,12 +144,14 @@ logLevel = "DEBUG"
         [backends.backend2.servers.server0]
         url = "http://wordpress2:80"
 
+
     #-----------------------------------------------------
     # Db2
     #-----------------------------------------------------
     [backends.backend_db2]
         [backends.backend_db2.servers.server0]
         url = "http://phpmyadmin2:80"
+
 
 
     #-----------------------------------------------------
@@ -145,6 +161,7 @@ logLevel = "DEBUG"
         [backends.backend3.servers.server0]
         url = "http://wordpress3:80"
 
+
     #-----------------------------------------------------
     # Db3
     #-----------------------------------------------------
@@ -152,20 +169,6 @@ logLevel = "DEBUG"
         [backends.backend_db3.servers.server0]
         url = "http://phpmyadmin3:80"
 
-
-    #-----------------------------------------------------
-    # Site4
-    #-----------------------------------------------------
-    [backends.backend4]
-        [backends.backend4.servers.server0]
-        url = "http://wordpress4:80"
-
-    #-----------------------------------------------------
-    # Db4
-    #-----------------------------------------------------
-    [backends.backend_db4]
-        [backends.backend_db4.servers.server0]
-        url = "http://phpmyadmin4:80"
 
 
 
@@ -185,6 +188,32 @@ logLevel = "DEBUG"
         [frontends.frontend_dash.routes.route0]
         rule = "Host:traefik.tests-traefik.ml"
         [frontends.frontend_dash.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
+
+
+    #-----------------------------------------------------
+    # Site0 redirection
+    #-----------------------------------------------------
+    [frontends.frontend0]
+    entryPoints = ["http", "https"]
+    backend = "backend0"
+    passHostHeader = true
+        [frontends.frontend0.routes.route0]
+        rule = "Host:site.tests-traefik.ml"
+#        [frontends.frontend0.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+    #-----------------------------------------------------
+    # Db0 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db0]
+    entryPoints = ["http", "https"]
+    backend = "backend_db0"
+    passHostHeader = true
+        [frontends.frontend_db0.routes.route0]
+        rule = "Host:db.tests-traefik.ml"
+        [frontends.frontend_db0.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
 
@@ -225,8 +254,8 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend2.routes.route0]
         rule = "Host:site2.tests-traefik.ml"
-#        [frontends.frontend2.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
 
     #-----------------------------------------------------
     # Db2 redirection
@@ -252,8 +281,8 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend3.routes.route0]
         rule = "Host:site3.tests-traefik.ml"
-#        [frontends.frontend3.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
+        [frontends.frontend3.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
 
     #-----------------------------------------------------
     # Db3 redirection
@@ -267,28 +296,3 @@ logLevel = "DEBUG"
         [frontends.frontend_db3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
-
-
-    #-----------------------------------------------------
-    # Site4 redirection
-    #-----------------------------------------------------
-    [frontends.frontend4]
-    entryPoints = ["http", "https"]
-    backend = "backend4"
-    passHostHeader = true
-        [frontends.frontend4.routes.route0]
-        rule = "Host:site4.tests-traefik.ml"
-#        [frontends.frontend4.auth.basic]
-#        usersfile = "/etc/traefik/.htpasswd"
-
-    #-----------------------------------------------------
-    # Db4 redirection
-    #-----------------------------------------------------
-    [frontends.frontend_db4]
-    entryPoints = ["http", "https"]
-    backend = "backend_db4"
-    passHostHeader = true
-        [frontends.frontend_db4.routes.route0]
-        rule = "Host:db4.tests-traefik.ml"
-        [frontends.frontend_db4.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
