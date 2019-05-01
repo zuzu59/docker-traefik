@@ -1,9 +1,10 @@
-#zf190501.1450
+#zf190426.1708
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
 #---------------------------------------------------------
 logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
 
 [traefikLog]
     filePath = "/var/log/traefik/traefik.log"
@@ -25,7 +26,6 @@ logLevel = "DEBUG"
     address = ":80"
         [entryPoints.http.redirect]
         entryPoint = "https"
-
     [entryPoints.https]
     address = ":443"
         [entryPoints.https.tls]
@@ -36,6 +36,8 @@ logLevel = "DEBUG"
 #            [entryPoints.dash.auth.basic]
 #            usersFile = "/etc/traefik/.htpasswd"
 
+    [entryPoints.db2]
+    address = ":9192"
 
 
 
@@ -45,6 +47,7 @@ logLevel = "DEBUG"
 [api]
     entryPoint = "dash"
     dashboard = true
+    debug = true
 
 
 #---------------------------------------------------------
@@ -56,8 +59,8 @@ logLevel = "DEBUG"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
@@ -89,7 +92,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend_dash]
         [backends.backend_dash.servers.server0]
-        url = "http://proxy:8080"
+        url = "http://localhost:8080"
 
 
     #-----------------------------------------------------
@@ -113,7 +116,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend_db2]
         [backends.backend_db2.servers.server0]
-        url = "http://db:9192"
+        url = "http://localhost:9192"
 
 
 
@@ -131,8 +134,6 @@ logLevel = "DEBUG"
     passHostHeader = true
         [frontends.frontend_dash.routes.route0]
         rule = "Host:www.tototutu.ml"
-        [frontends.frontend_dash.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
 
 
     #-----------------------------------------------------

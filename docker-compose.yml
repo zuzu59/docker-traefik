@@ -1,4 +1,4 @@
-#zf190426.1608
+#zf190501.1447
 
 version: "3"
 
@@ -9,13 +9,17 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:8080:8080"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=8080"
+#      - "127.0.0.1:8080:8080"
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.port=8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/traefik:/etc/traefik
-#      - $PWD/.htpasswd:/etc/traefik/.htpasswd
+#      - /var/run/docker.sock:/var/run/docker.sock
+      - "$PWD/traefik:/etc/traefik"
+      - "$PWD/.htpasswd:/etc/traefik/.htpasswd"
       - "$PWD/log:/var/log/traefik"
-
+    networks:
+      - traefik
+networks:
+  traefik:
+    external: true
