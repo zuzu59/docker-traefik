@@ -1,21 +1,4 @@
-#zf190417.1137
-
-#---------------------------------------------------------
-# Configuration file
-#---------------------------------------------------------
-[file]
-    filename = "/etc/traefik/traefik.toml"
-    watch = true
-
-
-
-#---------------------------------------------------------
-# Access log
-#---------------------------------------------------------
-filePath = "/var/log/traefik/access.log"
-format = "common"
-
-
+#zf190506.1548
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -26,6 +9,13 @@ logLevel = "DEBUG"
     filePath = "/var/log/traefik/traefik.log"
 
 
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
 
 #---------------------------------------------------------
 # Entrypoints
@@ -33,12 +23,19 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
 
     [entryPoints.dash]
     address = ":8080"
-        [entryPoints.dash.auth]
-            [entryPoints.dash.auth.basic]
-            usersFile = "/etc/traefik/.htpasswd"
+#        [entryPoints.dash.auth]
+#            [entryPoints.dash.auth.basic]
+#            usersFile = "/etc/traefik/.htpasswd"
+
 
 
 
@@ -50,26 +47,67 @@ logLevel = "DEBUG"
     dashboard = true
 
 
+#---------------------------------------------------------
+# Enable ACME (Let's Encrypt): automatic SSL.
+#---------------------------------------------------------
+[acme]
+    email = "christian+makerspace-lausanne@zufferey.com"
+    storage = "/etc/traefik/acme.json"
+    acmeLogging = true
+    onDemand = false
+    onHostRule = true
+#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    entryPoint = "https"
+
+    [acme.tlsChallenge]
+        entryPoint = "http"
+
+[[acme.domains]]
+    main = "makerspace-lausanne.ch"
+    sans = ["traefik.makerspace-lausanne.ch"]
+
+[[acme.domains]]
+    main = "makerspace-lausanne.ch"
+    sans = ["www.makerspace-lausanne.ch"]
+[[acme.domains]]
+    main = "makerspace-lausanne.ch"
+    sans = ["odoo.makerspace-lausanne.ch"]
+
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+#    sans = ["site3.tests-traefik.ml"]
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+#    sans = ["site4.tests-traefik.ml"]
+
+[[acme.domains]]
+    main = "makerspace-lausanne.ch"
+    sans = ["db1.makerspace-lausanne.ch"]
+
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+#    sans = ["db2.tests-traefik.ml"]
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+#    sans = ["db3.tests-traefik.ml"]
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+#    sans = ["db4.tests-traefik.ml"]
+
+
 
 #---------------------------------------------------------
 # Backends rules
 #---------------------------------------------------------
 [backends]
+
     #-----------------------------------------------------
     # Dashboard traefik
     #-----------------------------------------------------
     [backends.backend_dash]
         [backends.backend_dash.servers.server0]
-        url = "http://163.172.131.215:8080"
-
-
-    #-----------------------------------------------------
-    # Site0
-    #-----------------------------------------------------
-    [backends.backend0]
-        [backends.backend0.servers.server0]
-#        url = "http://z.zufferey.com"
-        url = "http://163.172.131.215:8000"
+        url = "http://proxy:8080"
 
 
     #-----------------------------------------------------
@@ -77,7 +115,14 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
-        url = "http://163.172.131.215:8001"
+        url = "http://wordpress1:80"
+
+    #-----------------------------------------------------
+    # Db1
+    #-----------------------------------------------------
+    [backends.backend_db1]
+        [backends.backend_db1.servers.server0]
+        url = "http://phpmyadmin1:80"
 
 
     #-----------------------------------------------------
@@ -85,7 +130,14 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend2]
         [backends.backend2.servers.server0]
-        url = "http://163.172.131.215:8002"
+        url = "http://wordpress2:80"
+
+    #-----------------------------------------------------
+    # Db2
+    #-----------------------------------------------------
+    [backends.backend_db2]
+        [backends.backend_db2.servers.server0]
+        url = "http://phpmyadmin2:80"
 
 
     #-----------------------------------------------------
@@ -93,46 +145,50 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend3]
         [backends.backend3.servers.server0]
-        url = "http://163.172.131.215:8003"
+        url = "http://wordpress3:80"
+
+    #-----------------------------------------------------
+    # Db3
+    #-----------------------------------------------------
+    [backends.backend_db3]
+        [backends.backend_db3.servers.server0]
+        url = "http://phpmyadmin3:80"
+
+
+    #-----------------------------------------------------
+    # Site4
+    #-----------------------------------------------------
+    [backends.backend4]
+        [backends.backend4.servers.server0]
+        url = "http://wordpress4:80"
+
+    #-----------------------------------------------------
+    # Db4
+    #-----------------------------------------------------
+    [backends.backend_db4]
+        [backends.backend_db4.servers.server0]
+        url = "http://phpmyadmin4:80"
+
+
 
 
 #---------------------------------------------------------
 # Frontends rules
 #---------------------------------------------------------
 [frontends]
+
     #-----------------------------------------------------
     # Dashboard traefik redirection
     #-----------------------------------------------------
     [frontends.frontend_dash]
     entryPoints = ["http", "https"]
     backend = "backend_dash"
+    passHostHeader = true
         [frontends.frontend_dash.routes.route0]
         rule = "Host:traefik.makerspace-lausanne.ch"
+        [frontends.frontend_dash.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
 
-
-    #-----------------------------------------------------
-    # Site0 redirection
-    #-----------------------------------------------------
-    [frontends.frontend0]
-    entryPoints = ["http", "https"]
-    backend = "backend0"
-    passHostHeader = true
-        [frontends.frontend0.routes.route0]
-        rule = "Host:www.makerspace-lausanne.ch"
-
-    [frontends.frontend0_1]
-    entryPoints = ["http", "https"]
-    backend = "backend0"
-    passHostHeader = true
-        [frontends.frontend0_1.routes.route0]
-        rule = "Host:www.makerspace-renens.ch"
-
-    [frontends.frontend0_2]
-    entryPoints = ["http", "https"]
-    backend = "backend0"
-    passHostHeader = true
-        [frontends.frontend0_2.routes.route0]
-        rule = "Host:www.maker-evolution.ch"
 
 
     #-----------------------------------------------------
@@ -143,7 +199,23 @@ logLevel = "DEBUG"
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:www1.makerspace-lausanne.ch"
+        rule = "Host:www.makerspace-lausanne.ch"
+#        [frontends.frontend1.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+    #-----------------------------------------------------
+    # Db1 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db1]
+    entryPoints = ["http", "https"]
+    backend = "backend_db1"
+    passHostHeader = true
+        [frontends.frontend_db1.routes.route0]
+        rule = "Host:db1.makerspace-lausanne.ch"
+        [frontends.frontend_db1.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
+
 
 
     #-----------------------------------------------------
@@ -154,7 +226,23 @@ logLevel = "DEBUG"
     backend = "backend2"
     passHostHeader = true
         [frontends.frontend2.routes.route0]
-        rule = "Host:www2.makerspace-lausanne.ch"
+        rule = "Host:site2.tests-traefik.ml"
+#        [frontends.frontend2.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+    #-----------------------------------------------------
+    # Db2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db2]
+    entryPoints = ["http", "https"]
+    backend = "backend_db2"
+    passHostHeader = true
+        [frontends.frontend_db2.routes.route0]
+        rule = "Host:db2.tests-traefik.ml"
+        [frontends.frontend_db2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
+
 
 
     #-----------------------------------------------------
@@ -164,9 +252,47 @@ logLevel = "DEBUG"
     entryPoints = ["http", "https"]
     backend = "backend3"
     passHostHeader = true
-        [frontends.frontend3.auth.basic]
+        [frontends.frontend3.routes.route0]
+        rule = "Host:site3.tests-traefik.ml"
+#        [frontends.frontend3.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+    #-----------------------------------------------------
+    # Db3 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db3]
+    entryPoints = ["http", "https"]
+    backend = "backend_db3"
+    passHostHeader = true
+        [frontends.frontend_db3.routes.route0]
+        rule = "Host:db3.tests-traefik.ml"
+        [frontends.frontend_db3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
-        [frontends.frontend3.routes.route0]
-        rule = "Host:www3.makerspace-lausanne.ch"
+
+
+    #-----------------------------------------------------
+    # Site4 redirection
+    #-----------------------------------------------------
+    [frontends.frontend4]
+    entryPoints = ["http", "https"]
+    backend = "backend4"
+    passHostHeader = true
+        [frontends.frontend4.routes.route0]
+        rule = "Host:site4.tests-traefik.ml"
+#        [frontends.frontend4.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
+
+    #-----------------------------------------------------
+    # Db4 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db4]
+    entryPoints = ["http", "https"]
+    backend = "backend_db4"
+    passHostHeader = true
+        [frontends.frontend_db4.routes.route0]
+        rule = "Host:db4.tests-traefik.ml"
+        [frontends.frontend_db4.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
 
