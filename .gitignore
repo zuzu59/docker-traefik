@@ -1,5 +1,6 @@
 log*
 traefik/acme.json
+.htpasswd
 
 
 # Byte-compiled / optimized / DLL files
