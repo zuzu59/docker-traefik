@@ -56,8 +56,8 @@ logLevel = "DEBUG"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
