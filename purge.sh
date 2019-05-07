@@ -1,6 +1,6 @@
 #!/bin/bash
 #Petit script pour nettoyer tout le binz
-#zf190430.1805
+#zf190507.1838
 
 #source: http://patatos.over-blog.com/2016/09/commet-faire-du-menage-dans-les-conteneurs-et-images-docker.html
 
@@ -17,11 +17,11 @@ docker volume ls
 docker volume rm $(docker volume ls -qf dangling=true)
 docker volume ls
 
-echo -e "
-Suprime l'image
-"
-docker image ls
-docker image rm -f traefik:alpine
-docker image ls
+#echo -e "
+#Suprime l'image
+#"
+#docker image ls
+#docker image rm -f traefik:alpine
+#docker image ls
 
 
