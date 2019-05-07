@@ -1,4 +1,4 @@
-#zf190506.1548
+#zf190507.1557
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -130,7 +130,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend2]
         [backends.backend2.servers.server0]
-        url = "http://wordpress2:80"
+        url = "http://wordpress1:80"
 
     #-----------------------------------------------------
     # Db2
@@ -226,7 +226,7 @@ logLevel = "DEBUG"
     backend = "backend2"
     passHostHeader = true
         [frontends.frontend2.routes.route0]
-        rule = "Host:site2.tests-traefik.ml"
+        rule = "Host:makerspace-lausanne.ch"
 #        [frontends.frontend2.auth.basic]
 #        usersfile = "/etc/traefik/.htpasswd"
 
