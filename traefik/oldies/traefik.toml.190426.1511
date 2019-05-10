@@ -1,0 +1,150 @@
+#zf190425.1524
+#---------------------------------------------------------
+# Service logs (here debug mode)
+#---------------------------------------------------------
+logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
+
+[traefikLog]
+    filePath = "/var/log/traefik/traefik.log"
+
+
+#---------------------------------------------------------
+# Entrypoints
+#---------------------------------------------------------
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+
+    [entryPoints.dash]
+    address = ":8080"
+        [entryPoints.dash.auth]
+            [entryPoints.dash.auth.basic]
+            usersFile = "/etc/traefik/.htpasswd"
+
+
+#---------------------------------------------------------
+# Admin dashboard
+#---------------------------------------------------------
+[api]
+    entryPoint = "dash"
+    dashboard = true
+    debug = true
+
+
+#---------------------------------------------------------
+# Enable Docker backend
+#---------------------------------------------------------
+#[docker]
+#endpoint = "unix:///var/run/docker.sock"
+#domain = "tests-traefik.ml"
+#watch = true
+#swarmmode = true
+#exposedbydefault = true
+#network = "web"
+
+
+#---------------------------------------------------------
+# Enable ACME (Let's Encrypt): automatic SSL.
+#---------------------------------------------------------
+[acme]
+    email = "sdfepfl+traefikAcme@gmail.com"
+    storage = "/etc/traefik/acme.json"
+    acmeLogging = true
+    onDemand = false
+    onHostRule = true
+#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    entryPoint = "https"
+
+    [acme.tlsChallenge]
+        entryPoint = "http"
+
+#[[acme.domains]]
+#    main = "tests-traefik.ml"
+[[acme.domains]]
+    main = "tototutu.cf"
+    sans = ["www1.tototutu.cf"]
+[[acme.domains]]
+    main = "tototutu.gq"
+    sans = ["www1.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.ml"
+    sans = ["www1.tototutu.ml"]
+
+
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
+
+#---------------------------------------------------------
+# Backends rules
+#---------------------------------------------------------
+[backends]
+    #-----------------------------------------------------
+    # Dashboard traefik
+    #-----------------------------------------------------
+    [backends.backend0]
+        [backends.backend0.servers.server0]
+        url = "http://163.172.161.67:8080"
+
+    #-----------------------------------------------------
+    # Site1
+    #-----------------------------------------------------
+    [backends.backend1]
+        [backends.backend1.servers.server0]
+        url = "http://163.172.161.67:8001"
+
+    #-----------------------------------------------------
+    # Site2
+    #-----------------------------------------------------
+    [backends.backend2]
+        [backends.backend2.servers.server0]
+        url = "http://163.172.161.67:8002"
+
+
+#---------------------------------------------------------
+# Frontends rules
+#---------------------------------------------------------
+[frontends]
+    #-----------------------------------------------------
+    # Dashboard traefik redirection
+    #-----------------------------------------------------
+    [frontends.frontend0]
+    entryPoints = ["http", "https"]
+    backend = "backend0"
+    passHostHeader = true
+        [frontends.frontend0.routes.route0]
+        rule = "Host:www1.tototutu.ml"
+
+    #-----------------------------------------------------
+    # Site1 redirection
+    #-----------------------------------------------------
+    [frontends.frontend1]
+    entryPoints = ["http", "https"]
+    backend = "backend1"
+    passHostHeader = true
+        [frontends.frontend1.routes.route0]
+        rule = "Host:www1.tototutu.cf"
+
+    #-----------------------------------------------------
+    # Site2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend2]
+    entryPoints = ["http", "https"]
+    backend = "backend2"
+    passHostHeader = true
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
+        [frontends.frontend2.routes.route0]
+        rule = "Host:www1.tototutu.gq"

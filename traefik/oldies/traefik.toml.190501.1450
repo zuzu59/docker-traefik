@@ -1,0 +1,175 @@
+#zf190426.1708
+
+#---------------------------------------------------------
+# Service logs (here debug mode)
+#---------------------------------------------------------
+logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
+
+[traefikLog]
+    filePath = "/var/log/traefik/traefik.log"
+
+
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
+
+#---------------------------------------------------------
+# Entrypoints
+#---------------------------------------------------------
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
+
+    [entryPoints.dash]
+    address = ":8080"
+#        [entryPoints.dash.auth]
+#            [entryPoints.dash.auth.basic]
+#            usersFile = "/etc/traefik/.htpasswd"
+
+    [entryPoints.db2]
+    address = ":9192"
+
+
+
+#---------------------------------------------------------
+# Admin dashboard
+#---------------------------------------------------------
+[api]
+    entryPoint = "dash"
+    dashboard = true
+    debug = true
+
+
+#---------------------------------------------------------
+# Enable ACME (Let's Encrypt): automatic SSL.
+#---------------------------------------------------------
+[acme]
+    email = "sdfepfl+traefikAcme@gmail.com"
+    storage = "/etc/traefik/acme.json"
+    acmeLogging = true
+    onDemand = false
+    onHostRule = true
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    entryPoint = "https"
+
+    [acme.tlsChallenge]
+        entryPoint = "http"
+
+[[acme.domains]]
+    main = "tototutu.cf"
+    sans = ["www.tototutu.cf"]
+[[acme.domains]]
+    main = "tototutu.gq"
+    sans = ["www.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.gq"
+    sans = ["db.tototutu.gq"]
+[[acme.domains]]
+    main = "tototutu.ml"
+    sans = ["www.tototutu.ml"]
+
+
+
+
+#---------------------------------------------------------
+# Backends rules
+#---------------------------------------------------------
+[backends]
+
+    #-----------------------------------------------------
+    # Dashboard traefik
+    #-----------------------------------------------------
+    [backends.backend_dash]
+        [backends.backend_dash.servers.server0]
+        url = "http://localhost:8080"
+
+
+    #-----------------------------------------------------
+    # Site1
+    #-----------------------------------------------------
+    [backends.backend1]
+        [backends.backend1.servers.server0]
+        url = "http://163.172.161.67:8001"
+
+
+    #-----------------------------------------------------
+    # Site2
+    #-----------------------------------------------------
+    [backends.backend2]
+        [backends.backend2.servers.server0]
+        url = "http://163.172.161.67:8002"
+
+
+    #-----------------------------------------------------
+    # Db2
+    #-----------------------------------------------------
+    [backends.backend_db2]
+        [backends.backend_db2.servers.server0]
+        url = "http://localhost:9192"
+
+
+
+#---------------------------------------------------------
+# Frontends rules
+#---------------------------------------------------------
+[frontends]
+
+    #-----------------------------------------------------
+    # Dashboard traefik redirection
+    #-----------------------------------------------------
+    [frontends.frontend_dash]
+    entryPoints = ["http", "https"]
+    backend = "backend_dash"
+    passHostHeader = true
+        [frontends.frontend_dash.routes.route0]
+        rule = "Host:www.tototutu.ml"
+
+
+    #-----------------------------------------------------
+    # Site1 redirection
+    #-----------------------------------------------------
+    [frontends.frontend1]
+    entryPoints = ["http", "https"]
+    backend = "backend1"
+    passHostHeader = true
+        [frontends.frontend1.routes.route0]
+        rule = "Host:www.tototutu.cf"
+
+
+    #-----------------------------------------------------
+    # Site2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend2]
+    entryPoints = ["http", "https"]
+    backend = "backend2"
+    passHostHeader = true
+        [frontends.frontend2.routes.route0]
+        rule = "Host:www.tototutu.gq"
+
+        [frontends.frontend2.auth.basic]
+        usersfile = "/etc/traefik/.htpasswd"
+
+
+    #-----------------------------------------------------
+    # Db2 redirection
+    #-----------------------------------------------------
+    [frontends.frontend_db2]
+    entryPoints = ["http", "https"]
+    backend = "backend_db2"
+    passHostHeader = true
+        [frontends.frontend_db2.routes.route0]
+        rule = "Host:db.tototutu.gq"
+
+#        [frontends.frontend_db2.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
