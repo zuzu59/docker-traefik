@@ -1,4 +1,4 @@
-#zf190507.1836
+#zf190510.1045
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -64,40 +64,40 @@ logLevel = "DEBUG"
         entryPoint = "http"
 
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["traefik.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["traefik.zuzutest.ml"]
 
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site0.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["site0.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site1.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["site1.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site2.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["site2.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site3.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["site3.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["site4.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["site4.zuzutest.ml"]
 
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db0.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["db0.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db1.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["db1.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db2.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["db2.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db3.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["db3.zuzutest.ml"]
 [[acme.domains]]
-    main = "tests-traefik.ml"
-    sans = ["db4.tests-traefik.ml"]
+    main = "zuzutest.ml"
+    sans = ["db4.zuzutest.ml"]
 
 
 
@@ -204,7 +204,7 @@ logLevel = "DEBUG"
     backend = "backend_dash"
     passHostHeader = true
         [frontends.frontend_dash.routes.route0]
-        rule = "Host:traefik.tests-traefik.ml"
+        rule = "Host:traefik.zuzutest.ml"
         [frontends.frontend_dash.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -218,7 +218,7 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:site0.tests-traefik.ml"
+        rule = "Host:site0.zuzutest.ml"
         [frontends.frontend0.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -230,7 +230,7 @@ logLevel = "DEBUG"
     backend = "backend_db0"
     passHostHeader = true
         [frontends.frontend_db0.routes.route0]
-        rule = "Host:db0.tests-traefik.ml"
+        rule = "Host:db0.zuzutest.ml"
         [frontends.frontend_db0.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -244,7 +244,7 @@ logLevel = "DEBUG"
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:site1.tests-traefik.ml"
+        rule = "Host:site1.zuzutest.ml"
         [frontends.frontend1.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -256,7 +256,7 @@ logLevel = "DEBUG"
     backend = "backend_db1"
     passHostHeader = true
         [frontends.frontend_db1.routes.route0]
-        rule = "Host:db1.tests-traefik.ml"
+        rule = "Host:db1.zuzutest.ml"
         [frontends.frontend_db1.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -271,7 +271,7 @@ logLevel = "DEBUG"
     backend = "backend2"
     passHostHeader = true
         [frontends.frontend2.routes.route0]
-        rule = "Host:site2.tests-traefik.ml"
+        rule = "Host:site2.zuzutest.ml"
         [frontends.frontend2.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -283,7 +283,7 @@ logLevel = "DEBUG"
     backend = "backend_db2"
     passHostHeader = true
         [frontends.frontend_db2.routes.route0]
-        rule = "Host:db2.tests-traefik.ml"
+        rule = "Host:db2.zuzutest.ml"
         [frontends.frontend_db2.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -298,7 +298,7 @@ logLevel = "DEBUG"
     backend = "backend3"
     passHostHeader = true
         [frontends.frontend3.routes.route0]
-        rule = "Host:site3.tests-traefik.ml"
+        rule = "Host:site3.zuzutest.ml"
         [frontends.frontend3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -310,7 +310,7 @@ logLevel = "DEBUG"
     backend = "backend_db3"
     passHostHeader = true
         [frontends.frontend_db3.routes.route0]
-        rule = "Host:db3.tests-traefik.ml"
+        rule = "Host:db3.zuzutest.ml"
         [frontends.frontend_db3.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -324,7 +324,7 @@ logLevel = "DEBUG"
     backend = "backend4"
     passHostHeader = true
         [frontends.frontend4.routes.route0]
-        rule = "Host:site4.tests-traefik.ml"
+        rule = "Host:site4.zuzutest.ml"
         [frontends.frontend4.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
@@ -336,7 +336,7 @@ logLevel = "DEBUG"
     backend = "backend_db4"
     passHostHeader = true
         [frontends.frontend_db4.routes.route0]
-        rule = "Host:db4.tests-traefik.ml"
+        rule = "Host:db4.zuzutest.ml"
         [frontends.frontend_db4.auth.basic]
         usersfile = "/etc/traefik/.htpasswd"
 
