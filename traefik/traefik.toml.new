@@ -1,21 +1,4 @@
-#zf190513.1540
-
-#---------------------------------------------------------
-# Configuration file
-#---------------------------------------------------------
-[file]
-    filename = "/etc/traefik/traefik.toml"
-    watch = true
-
-
-
-#---------------------------------------------------------
-# Access log
-#---------------------------------------------------------
-filePath = "/var/log/traefik/access.log"
-format = "common"
-
-
+#zf190513.1549
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -26,6 +9,13 @@ logLevel = "DEBUG"
     filePath = "/var/log/traefik/traefik.log"
 
 
+#---------------------------------------------------------
+# Configuration file
+#---------------------------------------------------------
+[file]
+    filename = "/etc/traefik/traefik.toml"
+    watch = true
+
 
 #---------------------------------------------------------
 # Entrypoints
@@ -33,17 +23,15 @@ logLevel = "DEBUG"
 [entryPoints]
     [entryPoints.http]
     address = ":80"
-#        [entryPoints.http.auth]
-#            [entryPoints.http.auth.basic]
-#            usersFile = "/etc/traefik/.htpasswd"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
 
-
+    [entryPoints.https]
+    address = ":443"
+        [entryPoints.https.tls]
 
     [entryPoints.dash]
     address = ":8080"
-#        [entryPoints.dash.auth]
-#            [entryPoints.dash.auth.basic]
-#            usersFile = "/etc/traefik/.htpasswd"
 
 
 
@@ -53,6 +41,39 @@ logLevel = "DEBUG"
 [api]
     entryPoint = "dash"
     dashboard = true
+
+
+
+
+#---------------------------------------------------------
+# Enable ACME (Let's Encrypt): automatic SSL.
+#---------------------------------------------------------
+[acme]
+    email = "christian.zufferey+traefik_paris1@epfl.ch"
+    storage = "/etc/traefik/acme.json"
+    acmeLogging = true
+    onDemand = false
+    onHostRule = true
+#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    entryPoint = "https"
+
+    [acme.tlsChallenge]
+        entryPoint = "http"
+
+[[acme.domains]]
+    main = "idev-fsd.ml"
+    sans = ["traefik.idev-fsd.ml"]
+    sans = ["ressenti-paris.idev-fsd.ml"]
+
+
+
+
+
+
+
+
+
 
 
 
