@@ -1,4 +1,4 @@
-#zf190521.1002
+#zf190513.1540
 
 #---------------------------------------------------------
 # Configuration file
@@ -84,12 +84,6 @@ logLevel = "DEBUG"
         url = "http://lighttpd:80"
 
 
-    #-----------------------------------------------------
-    # Site2
-    #-----------------------------------------------------
-    [backends.backend2]
-        [backends.backend2.servers.server0]
-        url = "http://blackbox-exporter:9115"
 
 
 
@@ -132,15 +126,3 @@ logLevel = "DEBUG"
         [frontends.frontend1.routes.route0]
         rule = "Host:www.idev-fsd.ml"
 
-
-    #-----------------------------------------------------
-    # Site2 redirection
-    #-----------------------------------------------------
-    [frontends.frontend2]
-    entryPoints = ["http", "https"]
-    backend = "backend2"
-    passHostHeader = true
-        [frontends.frontend2.routes.route0]
-        rule = "Host:bbe-paris.idev-fsd.ml"
-        [frontends.frontend2.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
