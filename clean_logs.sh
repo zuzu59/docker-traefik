@@ -1,6 +1,6 @@
 #!/bin/bash
 #Petit script pour nettoyer les logs de traefik
-#zf190716.0920
+#zf190717.0928
 
 #source: 
 
@@ -18,8 +18,8 @@ echo ---------- start
 cd /home/ubuntu/docker-traefik
 
 # ne garde que les 1 000 000 dernières lignes des logs !
-#/usr/bin/tail -n 1000000 ./log/traefik.log > ./log/t1.log
-/usr/bin/tail -n 500000 ./log/traefik.log > ./log/t1.log
+/usr/bin/tail -n 1000000 ./log/traefik.log > ./log/t1.log
+#/usr/bin/tail -n 500000 ./log/traefik.log > ./log/t1.log
 
 /bin/mv ./log/t1.log ./log/traefik.log
 /bin/ls -alrt ./log
