@@ -1,4 +1,4 @@
-#zf190812.1445
+#zf190812.1544
 #config pour zuzusrv.ml, serveurs de prod: melaniezufferey.ch, ...
 
 
@@ -58,8 +58,8 @@ logLevel = "DEBUG"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
@@ -70,8 +70,8 @@ logLevel = "DEBUG"
     sans = ["traefik.zuzusrv.ml"]
 
 [[acme.domains]]
-    main = "zuzusrv.ml"
-    sans = ["site0.zuzusrv.ml"]
+    main = "melaniezufferey.ch"
+    sans = ["www.melaniezufferey.ch"]
 [[acme.domains]]
     main = "zuzusrv.ml"
     sans = ["site1.zuzusrv.ml"]
@@ -220,9 +220,9 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:site0.zuzusrv.ml"
-        [frontends.frontend0.auth.basic]
-        usersfile = "/etc/traefik/.htpasswd"
+        rule = "Host:www.melaniezufferey.ch"
+#        [frontends.frontend0.auth.basic]
+#        usersfile = "/etc/traefik/.htpasswd"
 
     #-----------------------------------------------------
     # Db0 redirection
