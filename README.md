@@ -5,11 +5,12 @@ Petit reverse-proxy Traefik dans un Docker pour gérer des services Dockerisés
 
 ## Logorate pour les logs de Traefik
 
-il faut ajouter ceci:
+Afin que le logorate tourne chaque heure, il faut ajouter ceci:
 
 ```
-5 0 * * * root /home/ubuntu/docker-traefik/clean_logs.sh
+0 * * * * /home/ubuntu/docker-traefik/clean_logs.sh
 ```
+
 dans le crontab avec:
 
 ```
@@ -24,5 +25,5 @@ https://blog.wecoprod.com/traefik-docker/
 
 
 
-zf190609.1613
+zf190828.1102
 
