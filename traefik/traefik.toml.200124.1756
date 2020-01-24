@@ -1,4 +1,4 @@
-#zf200124.1756
+#zf190507.1557
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -51,13 +51,13 @@ logLevel = "DEBUG"
 # Enable ACME (Let's Encrypt): automatic SSL.
 #---------------------------------------------------------
 [acme]
-    email = "christian+bourgeoisie-de-st-luc@zufferey.com"
+    email = "christian+makerspace-lausanne@zufferey.com"
     storage = "/etc/traefik/acme.json"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
