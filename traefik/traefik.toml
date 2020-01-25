@@ -1,4 +1,4 @@
-#zf200125.1412
+#zf200125.1442
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -71,6 +71,10 @@ logLevel = "DEBUG"
 [[acme.domains]]
     main = "bourgeoisie-de-st-luc.ml"
     sans = ["www.bourgeoisie-de-st-luc.ml"]
+
+[[acme.domains]]
+    main = "bourgeoisie-de-st-luc.ml"
+    sans = ["site0.bourgeoisie-de-st-luc.ml"]
 
 [[acme.domains]]
     main = "bourgeoisie-de-st-luc.ml"
@@ -224,7 +228,7 @@ logLevel = "DEBUG"
     backend = "backend0"
     passHostHeader = true
         [frontends.frontend0.routes.route0]
-        rule = "Host:www.bourgeoisie-de-st-luc.ml"
+        rule = "Host:site0.bourgeoisie-de-st-luc.ml"
 #        [frontends.frontend0.auth.basic]
 #        usersfile = "/etc/traefik/.htpasswd"
 
