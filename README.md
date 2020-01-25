@@ -2,6 +2,22 @@
 Petit reverse-proxy Traefik dans un Docker pour gérer des services Dockerisés
 
 
+## Authentification basic
+
+ATTENTION, il faut mettre le fichier *.htpasswd* dans le dossier **./traefik**
+
+
+### Génération du fichier .htpasswd
+
+On peut le générer très facilement avec:
+```
+cd ./traefik
+sudo apt update
+sudo apt install -y apache2-utils
+htpasswd -n -B admin
+le_password_que_l_on_veut
+```
+
 
 ## Logorate pour les logs de Traefik
 
@@ -25,5 +41,4 @@ https://blog.wecoprod.com/traefik-docker/
 
 
 
-zf190828.1102
-
+zf200125.1438
