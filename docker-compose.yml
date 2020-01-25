@@ -1,19 +1,25 @@
+#zf200125.1427
+
 version: "3"
 
 services:
   proxy:
-    image: traefik
+    image: traefik:alpine
     restart: always
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=8080"
+#      - "127.0.0.1:8080:8080"
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.port=8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/traefik:/etc/traefik
-      - $PWD/.htpasswd:/etc/traefik/.htpasswd
+#      - /var/run/docker.sock:/var/run/docker.sock
+      - "$PWD/traefik:/etc/traefik"
+#      - "$PWD/.htpasswd:/etc/traefik/.htpasswd"
       - "$PWD/log:/var/log/traefik"
-
+    networks:
+      - frontend
+networks:
+    frontend:
+        external: true
