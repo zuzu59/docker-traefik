@@ -1,10 +1,10 @@
-#zf190501.1602, zf200507.2151
+#zf190501.1602
 
 version: "3"
 
 services:
   proxy:
-    image: traefik:v1.7.24-alpine
+    image: traefik:alpine
     restart: always
     ports:
       - "80:80"
