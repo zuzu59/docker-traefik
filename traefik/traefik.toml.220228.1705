@@ -1,4 +1,4 @@
-#zf190507.1557, zf220228.1705
+#zf190507.1557
 
 #---------------------------------------------------------
 # Service logs (here debug mode)
@@ -56,8 +56,8 @@ logLevel = "DEBUG"
     acmeLogging = true
     onDemand = false
     onHostRule = true
-#    caServer = "https://acme-v02.api.letsencrypt.org/directory"
-    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+#    caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
     entryPoint = "https"
 
     [acme.tlsChallenge]
@@ -68,8 +68,8 @@ logLevel = "DEBUG"
     sans = ["traefik.makerspace-lausanne.ch"]
 
 [[acme.domains]]
-    main = "zuzu-test.ml"
-    sans = ["www.zuzu-test.ml"]
+    main = "makerspace-lausanne.ch"
+    sans = ["www.makerspace-lausanne.ch"]
 [[acme.domains]]
     main = "makerspace-lausanne.ch"
     sans = ["odoo.makerspace-lausanne.ch"]
@@ -115,7 +115,7 @@ logLevel = "DEBUG"
     #-----------------------------------------------------
     [backends.backend1]
         [backends.backend1.servers.server0]
-        url = "http://localhost:8123"
+        url = "http://wordpress1:80"
 
     #-----------------------------------------------------
     # Db1
@@ -199,7 +199,7 @@ logLevel = "DEBUG"
     backend = "backend1"
     passHostHeader = true
         [frontends.frontend1.routes.route0]
-        rule = "Host:www.zuzu-test.ml"
+        rule = "Host:www.makerspace-lausanne.ch"
 #        [frontends.frontend1.auth.basic]
 #        usersfile = "/etc/traefik/.htpasswd"
 
